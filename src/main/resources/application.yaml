@@ -1,0 +1,32 @@
+server:
+  port: 8096
+
+spring:
+  application:
+    name: STORY-SERVICE
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/chat_db
+    username: ${DB_USERNAME:username}
+    password: ${DB_PASSWORD:samarkand2004@@}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://${EUREKA_HOST:localhost}:8761/eureka/}
+  instance:
+    preferIpAddress: true
+
+
+springdoc:
+  swagger-ui:
+    config-url: /api/deposit/v3/api-docs/swagger-config
+    url: /api/deposit/swagger-ui
+    path: /api/deposit/swagger-ui
