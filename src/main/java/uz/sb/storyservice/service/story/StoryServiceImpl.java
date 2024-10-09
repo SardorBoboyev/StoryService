@@ -2,14 +2,17 @@ package uz.sb.storyservice.service.story;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.sb.storyservice.domain.dto.request.StoryRequest;
-import uz.sb.storyservice.domain.dto.response.StoryResponse;
+import uz.sb.domain.dto.request.StoryRequest;
+import uz.sb.domain.dto.response.StoryResponse;
+import uz.sb.domain.dto.response.UserResponse;
+import uz.sb.storyservice.client.AuthServiceClient;
 import uz.sb.storyservice.domain.entity.StoryEntity;
 import uz.sb.storyservice.domain.exception.DataNotFoundException;
 import uz.sb.storyservice.repository.StoryRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,20 +20,24 @@ import java.util.stream.Collectors;
 public class StoryServiceImpl implements StoryService {
 
     private final StoryRepository storyRepository;
+    private final AuthServiceClient authServiceClient;
 
     @Override
     public StoryResponse save(StoryRequest storyRequest) {
 
-        // If a user is blocked by the story owner, they cannot see the story.
-        // The logic for this will be implemented after the repositories are unified
-        // when authService completed this will write
-        StoryEntity story = StoryEntity.builder()
-                .userId(storyRequest.getUserId())
-                .mediaType(storyRequest.getMediaType())
-                .contentUrl(storyRequest.getContentUrl())
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusHours(24))
-                .build();
+        UserResponse userRes = authServiceClient.findById(storyRequest.getUserId());
+
+        if (Objects.isNull(userRes)) {
+            throw new DataNotFoundException("User not found");
+        }
+
+                StoryEntity story = StoryEntity.builder()
+                        .userId(storyRequest.getUserId())
+                        .mediaType(storyRequest.getMediaType())
+                        .contentUrl(storyRequest.getContentUrl())
+                        .createdAt(LocalDateTime.now())
+                        .expiresAt(LocalDateTime.now().plusHours(24))
+                        .build();
 
         storyRepository.save(story);
 
