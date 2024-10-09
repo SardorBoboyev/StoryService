@@ -2,8 +2,8 @@ package uz.sb.storyservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.sb.storyservice.domain.dto.request.StoryRequest;
-import uz.sb.storyservice.domain.dto.response.StoryResponse;
+import uz.sb.domain.dto.request.StoryRequest;
+import uz.sb.domain.dto.response.StoryResponse;
 import uz.sb.storyservice.service.story.StoryServiceImpl;
 
 import java.util.List;

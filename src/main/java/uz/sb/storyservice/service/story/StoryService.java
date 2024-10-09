@@ -1,8 +1,11 @@
 package uz.sb.storyservice.service.story;
 
 import org.springframework.stereotype.Service;
-import uz.sb.storyservice.domain.dto.request.StoryRequest;
-import uz.sb.storyservice.domain.dto.response.StoryResponse;
+import uz.sb.domain.dto.request.StoryRequest;
+import uz.sb.domain.dto.response.StoryResponse;
+
+
+
 import uz.sb.storyservice.domain.entity.StoryEntity;
 
 import java.util.List;
