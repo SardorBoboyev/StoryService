@@ -11,7 +11,7 @@ import uz.sb.storyservice.service.storyViews.StoryViewsServiceImpl;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/story/storyViews")
+@RequestMapping("/api/story/story-views")
 public class StoryViewsController {
 
 
