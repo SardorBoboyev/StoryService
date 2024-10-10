@@ -33,6 +33,7 @@ public class StoryServiceImpl implements StoryService {
 
                 StoryEntity story = StoryEntity.builder()
                         .userId(storyRequest.getUserId())
+                        .comment(storyRequest.getComment())
                         .mediaType(storyRequest.getMediaType())
                         .contentUrl(storyRequest.getContentUrl())
                         .createdAt(LocalDateTime.now())
@@ -43,6 +44,7 @@ public class StoryServiceImpl implements StoryService {
 
         return StoryResponse.builder()
                 .id(story.getId())
+                .comment(story.getComment())
                 .userId(story.getUserId())
                 .mediaType(story.getMediaType())
                 .contentUrl(story.getContentUrl())

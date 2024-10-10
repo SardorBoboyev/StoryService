@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.sb.domain.dto.request.StoryViewsRequest;
 import uz.sb.domain.dto.response.StoryViewsResponse;
+import uz.sb.domain.dto.response.UserResponse;
+import uz.sb.storyservice.client.AuthServiceClient;
 import uz.sb.storyservice.domain.entity.StoryEntity;
 import uz.sb.storyservice.domain.entity.StoryViews;
 import uz.sb.storyservice.domain.exception.DataNotFoundException;
@@ -18,9 +20,15 @@ public class StoryViewsServiceImpl implements StoryViewsService {
 
     private final StoryRepository storyRepository;
     private final StoryViewsRepository storyViewsRepository;
+    private final AuthServiceClient authServiceClient;
 
     @Override
     public StoryViewsResponse addStoryViewIfNotSeen(StoryViewsRequest storyViewsRequest) {
+
+        UserResponse userRes = authServiceClient.findById(storyViewsRequest.getUserId());
+        if (userRes == null) {
+            throw new DataNotFoundException("User not found");
+        }
 
         StoryEntity story = storyRepository.findById(storyViewsRequest.getStoryId())
                 .orElseThrow(() -> new DataNotFoundException("Story not found"));
