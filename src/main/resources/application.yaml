@@ -31,3 +31,7 @@ springdoc:
     config-url: /api/deposit/v3/api-docs/swagger-config
     url: /api/deposit/swagger-ui
     path: /api/deposit/swagger-ui
+
+
+upload:
+  dir: src/main/resources/uploads
