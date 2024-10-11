@@ -2,10 +2,12 @@ package uz.sb.storyservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import uz.sb.domain.dto.request.StoryRequest;
 import uz.sb.domain.dto.response.StoryResponse;
 import uz.sb.storyservice.service.story.StoryServiceImpl;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,8 +18,8 @@ public class StoryController {
     private final StoryServiceImpl storyService;
 
     @PostMapping("/create")
-    private StoryResponse create(@RequestBody StoryRequest storyRequest) {
-        return storyService.save(storyRequest);
+    private StoryResponse create(@RequestBody StoryRequest storyRequest, @RequestParam("file") MultipartFile file) throws IOException {
+        return storyService.save(storyRequest, file);
     }
 
     @GetMapping("/get-all")
