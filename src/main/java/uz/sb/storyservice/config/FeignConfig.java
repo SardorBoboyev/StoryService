@@ -14,8 +14,8 @@ public class FeignConfig {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = (String) authentication.getPrincipal();
             String roles = authentication.getAuthorities().stream().findFirst().get().getAuthority();
-            requestTemplate.header("X-Username",username);
-            requestTemplate.header("X-Roles",roles);
+            requestTemplate.header("Authorization",username);
+//            requestTemplate.header("X-Roles",roles);
         };
     }
 }

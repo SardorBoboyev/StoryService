@@ -2,10 +2,10 @@ package uz.sb.storyservice.service.storyViews;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.sb.domain.dto.request.StoryViewsRequest;
-import uz.sb.domain.dto.response.StoryViewsResponse;
-import uz.sb.domain.dto.response.UserResponse;
 import uz.sb.storyservice.client.AuthServiceClient;
+import uz.sb.storyservice.domain.dto.request.StoryViewsRequest;
+import uz.sb.storyservice.domain.dto.response.StoryViewsResponse;
+import uz.sb.storyservice.domain.dto.response.UserResponse;
 import uz.sb.storyservice.domain.entity.StoryEntity;
 import uz.sb.storyservice.domain.entity.StoryViews;
 import uz.sb.storyservice.domain.exception.DataNotFoundException;

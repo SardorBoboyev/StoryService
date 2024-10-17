@@ -16,16 +16,16 @@ import java.util.List;
 public class CustomFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String username = request.getHeader("X-Username");
-        String roles = request.getHeader("X-Roles");
+        String username = request.getHeader("Authorization");
+//        String roles = request.getHeader("X-Roles");
 
-        if (username == null || roles == null) {
+        if (username == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(username, null, List.of(new SimpleGrantedAuthority(roles)));
+            new UsernamePasswordAuthenticationToken(username, null, null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         filterChain.doFilter(request, response);
