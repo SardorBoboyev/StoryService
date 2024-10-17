@@ -8,4 +8,5 @@ import uz.sb.storyservice.domain.dto.response.StoryViewsResponse;
 public interface StoryViewsService {
 
     StoryViewsResponse addStoryViewIfNotSeen(StoryViewsRequest storyViewsRequest);
+
 }
