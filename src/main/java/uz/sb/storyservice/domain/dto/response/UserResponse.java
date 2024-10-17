@@ -1,7 +1,6 @@
 package uz.sb.storyservice.domain.dto.response;
 
 import lombok.*;
-import uz.sb.domain.dto.response.BaseResponse;
 
 @AllArgsConstructor
 @NoArgsConstructor
