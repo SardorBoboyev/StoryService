@@ -1,6 +1,11 @@
 package uz.sb.storyservice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.annotation.MultipartConfig;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uz.sb.storyservice.domain.dto.request.StoryRequest;
@@ -12,14 +17,21 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@MultipartConfig(maxFileSize = 10 * 1024 * 1024,
+        maxRequestSize = 50 * 1024 * 1024,
+        fileSizeThreshold = 10 * 1024)
 @RequestMapping("/api/story")
 public class StoryController {
 
     private final StoryServiceImpl storyService;
 
-    @PostMapping("/create")
-    private StoryResponse create(@RequestBody StoryRequest storyRequest, @RequestParam("file") MultipartFile file) throws IOException {
-        return storyService.save(storyRequest, file);
+    @PostMapping( "/create")
+    public ResponseEntity<StoryResponse> create(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("jsonData") StoryRequest storyRequest) {
+        StoryResponse save = storyService.save(storyRequest, file);
+        return new ResponseEntity<>(save, HttpStatus.CREATED);
+
     }
 
     @GetMapping("/get-all")

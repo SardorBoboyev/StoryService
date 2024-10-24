@@ -5,9 +5,9 @@ spring:
   application:
     name: STORY-SERVICE
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:5432/sardor
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/my_test
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:2004}
+    password: ${DB_PASSWORD:rayaandmaya1426}
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,6 +16,11 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 eureka:
   client:
@@ -27,10 +32,21 @@ eureka:
 
 springdoc:
   swagger-ui:
-    config-url: /api/deposit/v3/api-docs/swagger-config
-    url: /api/deposit/swagger-ui
-    path: /api/deposit/swagger-ui
+    config-url: /api/story/v3/api-docs/swagger-config
+    url: /api/story/swagger-ui
+    path: /api/story/swagger-ui
 
 
 upload:
   dir: src/main/resources/uploads
+
+
+
+aws:
+  s3:
+    bucket-name: chatappaws
+    region: us-east-1
+    access-key-id: AKIA6GBMGGFRI3DD7TH4
+    secret-access-key: 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
+
+
