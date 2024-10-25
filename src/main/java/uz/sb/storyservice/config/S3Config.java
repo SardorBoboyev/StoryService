@@ -32,5 +32,6 @@ public class S3Config {
                 .region(Region.US_EAST_1)
                 .credentialsProvider(this::awsCreadentials)
                 .build();
+
     }
 }
