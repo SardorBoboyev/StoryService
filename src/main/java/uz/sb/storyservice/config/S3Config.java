@@ -33,5 +33,6 @@ public class S3Config {
                 .credentialsProvider(this::awsCreadentials)
                 .build();
 
+
     }
 }
