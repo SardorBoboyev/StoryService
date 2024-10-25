@@ -2,11 +2,17 @@ package uz.sb.storyservice.service.story;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import uz.sb.storyservice.client.AuthServiceClient;
 import uz.sb.storyservice.domain.dto.request.StoryRequest;
@@ -16,11 +22,14 @@ import uz.sb.storyservice.domain.entity.StoryEntity;
 import uz.sb.storyservice.domain.exception.DataNotFoundException;
 import uz.sb.storyservice.repository.StoryRepository;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -131,6 +140,62 @@ public class StoryServiceImpl implements StoryService {
                 .createdAt(updatedStory.getCreatedAt())
                 .comment(updatedStory.getComment())
                 .build();
+    }
+
+    @Override
+    public ResponseEntity<byte[]> downloadFilesAsZip(Long userId) {
+        List<StoryEntity> stories = storyRepository.findAllByUserId(userId);
+
+        if (stories.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
+
+            for (StoryEntity story : stories) {
+                String contentUrl = story.getContentUrl();
+                byte[] fileBytes = downloadFile(contentUrl);
+
+
+                ZipEntry zipEntry = new ZipEntry(extractFileNameFromUrl(contentUrl));
+                zipOutputStream.putNextEntry(zipEntry);
+                zipOutputStream.write(fileBytes);
+                zipOutputStream.closeEntry();
+            }
+
+            zipOutputStream.finish();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"files.zip\"");
+            headers.setContentLength(byteArrayOutputStream.size());
+
+            return new ResponseEntity<>(byteArrayOutputStream.toByteArray(), headers, HttpStatus.OK);
+
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    private byte[] downloadFile(String contentUrl) {
+        String fileName = extractFileNameFromUrl(contentUrl);
+
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+
+        try (ResponseInputStream<GetObjectResponse> s3Object = s3Client.getObject(getObjectRequest)) {
+            return s3Object.readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to download file from S3", e);
+        }
+    }
+
+    private String extractFileNameFromUrl(String contentUrl) {
+        return contentUrl.substring(contentUrl.lastIndexOf("/") + 1);
     }
 
 }

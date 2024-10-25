@@ -1,5 +1,6 @@
 package uz.sb.storyservice.service.story;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +25,7 @@ public interface StoryService {
 
     StoryResponse update(Long id, StoryRequest storyRequest);
 
-
+   ResponseEntity<byte[]> downloadFilesAsZip(Long userId);
 
 
 }

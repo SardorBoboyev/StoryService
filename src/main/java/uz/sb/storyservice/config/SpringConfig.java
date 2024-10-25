@@ -10,7 +10,9 @@ import uz.sb.storyservice.filter.CustomFilter;
 
 @Configuration
 public class SpringConfig {
-    private final String[] WHITE_LIST = {"/api/story/swagger-ui/**", "/api/story/v3/api-docs/**"};
+    private final String[] WHITE_LIST = {"/api/story/swagger-ui/**", "/api/story/v3/api-docs/**"
+           /*eto nujno otkrit, yesli testirovshiku nujno pokazat zip fayl v chrome ispolzuya etot url ,
+            "api/story/files/**"*/};
 
 
     @Bean
