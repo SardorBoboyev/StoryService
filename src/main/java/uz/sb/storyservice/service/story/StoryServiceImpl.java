@@ -161,6 +161,7 @@ public class StoryServiceImpl implements StoryService {
                 zipOutputStream.putNextEntry(zipEntry);
                 zipOutputStream.write(fileBytes);
                 zipOutputStream.closeEntry();
+
             }
 
             zipOutputStream.finish();
