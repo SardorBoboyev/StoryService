@@ -61,4 +61,10 @@ public class StoryController {
     private void delete(@PathVariable("id") Long id) {
         storyService.delete(id);
     }
+
+
+    @GetMapping("/all-stories-user/{userId}")
+    List<StoryResponse> getAllStoryUser(@PathVariable("userId") Long userId) {
+        return storyService.findAllStoriesByUserId(userId);
+    }
 }

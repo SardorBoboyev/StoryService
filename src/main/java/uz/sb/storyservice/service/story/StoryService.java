@@ -27,5 +27,7 @@ public interface StoryService {
 
    ResponseEntity<byte[]> downloadFilesAsZip(Long userId);
 
+   List<StoryResponse> findAllStoriesByUserId(Long userId);
+
 
 }

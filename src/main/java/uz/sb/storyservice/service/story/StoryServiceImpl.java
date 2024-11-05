@@ -178,6 +178,22 @@ public class StoryServiceImpl implements StoryService {
         }
     }
 
+    @Override
+    public List<StoryResponse> findAllStoriesByUserId(Long userId) {
+        return storyRepository.findAllByUserId(userId).stream()
+                .map(storyEntity -> StoryResponse.builder()
+                        .id(storyEntity.getId())
+                        .userId(storyEntity.getUserId())
+                        .mediaType(storyEntity.getMediaType())
+                        .comment(storyEntity.getComment())
+                        .contentUrl(storyEntity.getContentUrl())
+                        .createdAt(storyEntity.getCreatedAt())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+
 
     private byte[] downloadFile(String contentUrl) {
         String fileName = extractFileNameFromUrl(contentUrl);

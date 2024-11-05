@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface StoryRepository extends JpaRepository<StoryEntity, Long> {
-List<StoryEntity> findAllByUserId(Long userId);
+
+    List<StoryEntity> findAllByUserId(Long userId);
 }
