@@ -157,7 +157,6 @@ public class StoryServiceImpl implements StoryService {
                 String contentUrl = story.getContentUrl();
                 byte[] fileBytes = downloadFile(contentUrl);
 
-
                 ZipEntry zipEntry = new ZipEntry(extractFileNameFromUrl(contentUrl));
                 zipOutputStream.putNextEntry(zipEntry);
                 zipOutputStream.write(fileBytes);
